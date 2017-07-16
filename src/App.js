@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Jumbotron, Button } from 'react-bootstrap';
+import { Table} from 'react-bootstrap';
 
 import './App.css';
 
@@ -72,7 +72,7 @@ class App extends Component {
       <div> {
 
       }
-      <h1>Trade Away Application</h1>
+      <h2>Trade Away Application</h2>
       <div className="form-group"> {/* class is reserved in JS, so className must be used */}
           
         </div>
@@ -86,7 +86,7 @@ class App extends Component {
         </div>
         <div className="form-group">
           <label htmlFor="type">User Type </label> {/* for is reserved in JS, so htmlFor must be used */}
-          <select className="form-control-select" value={this.state.type} onChange={this.handleTypeChange}>
+          <select className="form-control" value={this.state.type} onChange={this.handleTypeChange}>
               <option value="Buyer">Buyer</option>
               <option value="Seller">Seller</option>
           </select>
@@ -95,10 +95,45 @@ class App extends Component {
         <div className="form-group">
           <button type="button" className="btn btn-primary" disabled={!isEnabled} onClick={this.handleSubmit}>Create User</button> {/* Some form attributes use an expression to set true or false: they include disabled, required, checked and readOnly */}
         </div>
+
+        <UserList userList={this.state}/>
+        
       </div>
-
-
     );
+
+    
+  }
+}
+
+
+class UserList extends React.Component{
+  render() {
+    return (
+      <Table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <User user={this.props.userList}/>
+        </tbody>
+      </Table>
+    );
+  }
+}
+
+class User extends React.Component{
+  render() {
+    return (
+      <tr>
+        <td>{this.props.user.fname}</td>
+        <td>{this.props.user.lname}</td>
+        <td>{this.props.user.type}</td>
+      </tr>
+    )
   }
 }
 
