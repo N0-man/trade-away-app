@@ -1,5 +1,5 @@
-ThougthWorks Final Week BootCamp
-This project was created using creat-react-app on Node and it came with below README... I kept it as it is...
+#### ThougthWorks Final Week BootCamp
+#### This project was created using creat-react-app on Node and it came with below README... I kept it as it is...
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
