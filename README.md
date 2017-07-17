@@ -14,6 +14,17 @@ Create new react app
  
 Install React-Bootstrap: $ npm install --save react-bootstrap
     $ npm install bootstrap --save
+    
+Install react router
+$ npm install --save react-router-dom
+```
+
+#### technical spike
+```
+> Single page app (one html) and render various js based on path or event (click)
+> Change component state based on drop down value
+> fetch to call Rest POST and GET
+> process single and array of JSON resopnse from API call. Render on page
 ```
 
 #### Original README from create-react-app - full of junk but useful
