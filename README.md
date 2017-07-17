@@ -1,7 +1,22 @@
 #### ThougthWorks Final Week BootCamp
 #### This project was created using creat-react-app on Node and it came with below README... I kept it as it is...
 
+#### Some stuff to look at...
+```
+Node Installation: brew install node
+Validate: npm -v
 
+Installing create-react-app global utility
+  ### `npm i create-react-app -g`
+  
+Create new react app
+  ### `create-react-app trade-away-app`
+ 
+Install React-Bootstrap: npm install --save react-bootstrap
+    npm install bootstrap --save
+```
+
+#### Original README from create-react-app - full of junk but useful
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
