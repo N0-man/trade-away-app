@@ -3,17 +3,17 @@
 
 #### Some stuff to look at...
 ```
-Node Installation: brew install node
-Validate: npm -v
+Node Installation: $ brew install node
+Validate: $ npm -v
 
 Installing create-react-app global utility
-  ### `npm i create-react-app -g`
+  $ npm i create-react-app -g
   
 Create new react app
-  ### `create-react-app trade-away-app`
+  $ create-react-app trade-away-app
  
-Install React-Bootstrap: npm install --save react-bootstrap
-    npm install bootstrap --save
+Install React-Bootstrap: $ npm install --save react-bootstrap
+    $ npm install bootstrap --save
 ```
 
 #### Original README from create-react-app - full of junk but useful
