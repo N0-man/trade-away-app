@@ -15,12 +15,20 @@ class RegisterUser extends Component {
       fname: '',
       lname: '',
       type: 'Buyer',
+      userid: '',
     };
 
+    this.handleUserIdChange = this.handleUserIdChange.bind(this);
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleUserIdChange(event) {
+      this.setState({
+          userid: event.target.value
+      });
   }
 
   handleFirstNameChange(event) {
@@ -51,51 +59,60 @@ class RegisterUser extends Component {
         fname: this.state.fname,
         lname: this.state.lname,
         type: this.state.type,
+        userId: this.state.userid,
       })
     }).then(function(response) {
       return response.json();
     }).then(function(text) {
-      alert('User Created: SUCCESS \n First Name: ' + text.fname + ' \n Last Name:' + text.lname + '\n Type:' + text.type);
-      console.log(text);
-    });
-  }
+        alert('User Created: SUCCESS \n First Name: ' + text.fname + ' \n Last Name: ' + text.lname)
+        });
+    }
 
-  defaultStateAfterCreate() {
-    this.setState({
-      fname: ''
-    });
-    this.setState({
-      lname: ''
-    });
-    this.setState({
-      type: 'Buyer'
-    });
-  }
+    defaultStateAfterCreate() {
+      this.setState({
+        fname: ''
+      });
+      this.setState({
+        lname: ''
+      });
+      this.setState({
+        type: 'Buyer'
+      });
+        this.setState({
+            userid: ''
+        });
+    }
 
-  handleSubmit(event) {
-    this.createUser();
-    event.preventDefault();
-    this.defaultStateAfterCreate();
-  }
+    handleSubmit(event) {
+      this.createUser();
+      event.preventDefault();
+      this.defaultStateAfterCreate();
+    }
 
-  render() {
-    const {
-      fname,
-      lname,
-      type
-    } = this.state;
-    const isEnabled =
-      fname.length > 0 &&
-      lname.length > 0;
-    return (
+    render() {
+      const {
+        fname,
+        lname,
+        type,
+        userid
+      } = this.state;
+      const isEnabled =
+        fname.length > 0 &&
+        lname.length > 0 &&
+        userid.length > 0;
+      return (
 
 
-      <div> {
+        <div> {
 
       }
       <h3>Register New User</h3>
       <div className="form-group"> {/* class is reserved in JS, so className must be used */}
         
+      </div>
+      <div className="form-group">
+        <label htmlFor="userId">User ID</label> {/* for is reserved in JS, so htmlFor must be used */}
+        <input type="text" className="form-control" id="userId" value={this.state.userid} onChange={this.handleUserIdChange} />
       </div>
       <div className="form-group">
         <label htmlFor="firstName">Frist Name</label> {/* for is reserved in JS, so htmlFor must be used */}
@@ -120,19 +137,20 @@ class RegisterUser extends Component {
       <h3>Render Component based on User Type State </h3>
       <DecisionBuyerOrSeller decisionBuyerOrSeller = {this.state}/>
       </div>
-    );
+      );
 
 
+    }
   }
-}
 
 
-class UserList extends React.Component {
-  render() {
-    return (
-      <Table>
+  class UserList extends React.Component {
+    render() {
+      return (
+        <Table>
         <thead>
           <tr>
+            <th>User ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Type</th>
@@ -142,46 +160,47 @@ class UserList extends React.Component {
           <User user={this.props.userList}/>
         </tbody>
       </Table>
-    );
+      );
+    }
   }
-}
 
-class User extends React.Component {
-  render() {
-    return (
-      <tr>
+  class User extends React.Component {
+    render() {
+      return (
+        <tr>
+        <td>{this.props.user.userid}</td>
         <td>{this.props.user.fname}</td>
         <td>{this.props.user.lname}</td>
         <td>{this.props.user.type}</td>
       </tr>
-    )
+      )
+    }
   }
-}
 
-class DecisionBuyerOrSeller extends React.Component {
-  render() {
-    return this.props.decisionBuyerOrSeller.type === 'Buyer' ? <Buyer /> : <Seller />;
+  class DecisionBuyerOrSeller extends React.Component {
+    render() {
+      return this.props.decisionBuyerOrSeller.type === 'Buyer' ? <Buyer /> : <Seller />;
+    }
   }
-}
 
-class Buyer extends React.Component {
-  render() {
-    return (
-      <div>
+  class Buyer extends React.Component {
+    render() {
+      return (
+        <div>
         <label>Welcome Buyer - Buy good stuff</label> 
       </div>
-    )
+      )
+    }
   }
-}
 
-class Seller extends React.Component {
-  render() {
-    return (
-      <div>
+  class Seller extends React.Component {
+    render() {
+      return (
+        <div>
         <label>Hey Seller - You better sell good stuff</label> 
       </div>
-    )
+      )
+    }
   }
-}
 
-export default RegisterUser;
+  export default RegisterUser;

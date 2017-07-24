@@ -65,6 +65,7 @@ class SearchUser extends Component {
       <Table>
         <thead>
           <tr>
+            <th>User ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Type</th>
@@ -75,6 +76,7 @@ class SearchUser extends Component {
              
                return (
                   <tr key = {key}>
+                      <td>{user.userId}</td>
                       <td>{user.fname}</td>
                       <td>{user.lname}</td>
                       <td>{user.type}</td>
