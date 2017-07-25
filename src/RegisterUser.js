@@ -6,67 +6,49 @@ import {
 } from 'react-bootstrap';
 
 import './App.css';
+import AppStore from './stores/AppStore';
+//import * as bs from 'bootstrap';
+import RegistrationActions from './actions/Registration'
 
 
 class RegisterUser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      fname: '',
-      lname: '',
-      type: 'Buyer',
-      userid: '',
-    };
+      this.state = {
+          data: AppStore.getRegistrationState(),
+      };
 
     this.handleUserIdChange = this.handleUserIdChange.bind(this);
     this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
     this.handleLastNameChange = this.handleLastNameChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+      this.onDataChange = this.onDataChange.bind(this);
+
+      AppStore.addChangeListener(this.onDataChange);
+
   }
 
+    onDataChange(){
+        this.setState({data: AppStore.getRegistrationState()});
+    }
+
   handleUserIdChange(event) {
-      this.setState({
-          userid: event.target.value
-      });
+      RegistrationActions.useridChange(({userid: event.target.value}))
   }
 
   handleFirstNameChange(event) {
-    this.setState({
-      fname: event.target.value
-    });
+      RegistrationActions.fnameChange(({fname: event.target.value}))
   }
   handleLastNameChange(event) {
-    this.setState({
-      lname: event.target.value
-    });
+        debugger;
+      RegistrationActions.lnameChange(({lname: event.target.value}))
   }
   handleTypeChange(event) {
-    this.setState({
-      type: event.target.value
-    });
+        debugger;
+      RegistrationActions.typeChange(({userType: event.target.value}))
   }
 
-  createUser() {
-    // The fetch() function returns a Promise because of it's asynchronous nature. 
-    //Ir's result will be available only after the http request is completed ....
-    fetch('http://localhost:8080/createUser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fname: this.state.fname,
-        lname: this.state.lname,
-        type: this.state.type,
-        userId: this.state.userid,
-      })
-    }).then(function(response) {
-      return response.json();
-    }).then(function(text) {
-        alert('User Created: SUCCESS \n First Name: ' + text.fname + ' \n Last Name: ' + text.lname)
-        });
-    }
 
     defaultStateAfterCreate() {
       this.setState({
@@ -76,7 +58,7 @@ class RegisterUser extends Component {
         lname: ''
       });
       this.setState({
-        type: 'Buyer'
+        userType: 'Buyer'
       });
         this.setState({
             userid: ''
@@ -84,22 +66,17 @@ class RegisterUser extends Component {
     }
 
     handleSubmit(event) {
-      this.createUser();
+        RegistrationActions.registerRequest(this.state.data);
+      //this.createUser();
       event.preventDefault();
-      this.defaultStateAfterCreate();
+      //this.defaultStateAfterCreate();
     }
 
     render() {
-      const {
-        fname,
-        lname,
-        type,
-        userid
-      } = this.state;
       const isEnabled =
-        fname.length > 0 &&
-        lname.length > 0 &&
-        userid.length > 0;
+          this.state.data.fname.length > 0 &&
+          this.state.data.lname.length > 0 &&
+          this.state.data.userid.length > 0;
       return (
 
 
@@ -112,19 +89,19 @@ class RegisterUser extends Component {
       </div>
       <div className="form-group">
         <label htmlFor="userId">User ID</label> {/* for is reserved in JS, so htmlFor must be used */}
-        <input type="text" className="form-control" id="userId" value={this.state.userid} onChange={this.handleUserIdChange} />
+        <input type="text" className="form-control" id="userId" value={this.state.data.userid} onChange={this.handleUserIdChange} />
       </div>
       <div className="form-group">
         <label htmlFor="firstName">Frist Name</label> {/* for is reserved in JS, so htmlFor must be used */}
-        <input type="text" className="form-control" id="firstName" value={this.state.fname} onChange={this.handleFirstNameChange} />
+        <input type="text" className="form-control" id="firstName" value={this.state.data.fname} onChange={this.handleFirstNameChange} />
       </div>
       <div className="form-group">
         <label htmlFor="lastName">Last Name</label> {/* for is reserved in JS, so htmlFor must be used */}
-        <input type="text" className="form-control" id="lastName" value={this.state.lname} onChange={this.handleLastNameChange} />
+        <input type="text" className="form-control" id="lastName" value={this.state.data.lname} onChange={this.handleLastNameChange} />
       </div>
       <div className="form-group">
         <label htmlFor="type">User Type </label> {/* for is reserved in JS, so htmlFor must be used */}
-        <select className="form-control" value={this.state.type} onChange={this.handleTypeChange}>
+        <select className="form-control" value={this.state.data.userType} onChange={this.handleTypeChange}>
           <option value="Buyer">Buyer</option>
           <option value="Seller">Seller</option>
         </select>
@@ -132,10 +109,10 @@ class RegisterUser extends Component {
       <div className="form-group">
         <button type="button" className="btn btn-primary" disabled={!isEnabled} onClick={this.handleSubmit}>Create User</button> {/* Some form attributes use an expression to set true or false: they include disabled, required, checked and readOnly */}
       </div>
-      <UserList userList={this.state}/>
+      <UserList userList={this.state.data}/>
 
       <h3>Render Component based on User Type State </h3>
-      <DecisionBuyerOrSeller decisionBuyerOrSeller = {this.state}/>
+      <DecisionBuyerOrSeller decisionBuyerOrSeller = {this.state.data}/>
       </div>
       );
 
@@ -171,7 +148,7 @@ class RegisterUser extends Component {
         <td>{this.props.user.userid}</td>
         <td>{this.props.user.fname}</td>
         <td>{this.props.user.lname}</td>
-        <td>{this.props.user.type}</td>
+        <td>{this.props.user.userType}</td>
       </tr>
       )
     }
@@ -179,7 +156,7 @@ class RegisterUser extends Component {
 
   class DecisionBuyerOrSeller extends React.Component {
     render() {
-      return this.props.decisionBuyerOrSeller.type === 'Buyer' ? <Buyer /> : <Seller />;
+      return this.props.decisionBuyerOrSeller.userType === 'Buyer' ? <Buyer /> : <Seller />;
     }
   }
 
