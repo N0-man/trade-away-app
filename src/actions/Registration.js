@@ -38,6 +38,12 @@ var RegistrationActions = {
         AppDispatcher.handleViewAction({
             actionType:Constants.REGISTRATION_SUCCESS
         })
+    },
+    userIDValidation: function(flag){
+        AppDispatcher.handleViewAction({
+            actionType:Constants.USER_ID_VALIDATION,
+            item: flag
+        })
     }
 }
 

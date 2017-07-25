@@ -26,7 +26,7 @@ var registrationState = {
     fname: '',
     lname: '',
     userType: 'Buyer',
-    submitEnable: 'true',
+    userIDAvailabilityFlag: 'false',
 };
 
 
@@ -43,6 +43,11 @@ AppDispatcher.register(function(payload){
     }
     if (payload.action.actionType === Constants.USER_ID_CHANGE) {
         registrationState.userid = payload.action.item.userid
+        if (registrationState.userid === '') { //BLANK condition to reset the flag
+            registrationState.userIDAvailabilityFlag = 'false'
+        } else {
+            UserService.isUserIDAvaialble(payload.action.item.userid)
+        }
     }
     if (payload.action.actionType === Constants.REGISTER_REQUEST) {
         UserService.registerUser(payload.action.item);
@@ -53,8 +58,14 @@ AppDispatcher.register(function(payload){
         registrationState.lname = '';
         registrationState.fname = '';
         registrationState.userType = 'Buyer';
+        registrationState.userIDAvailabilityFlag = 'false';
 
         console.log('Resetting User Form');
+    }
+    if (payload.action.actionType === Constants.USER_ID_VALIDATION) {
+
+        registrationState.userIDAvailabilityFlag = payload.action.item;
+        console.log('User ID Validation Status '+ payload.action.item);
     }
     AppStore.emitChange();
     return true;

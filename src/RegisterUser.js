@@ -41,42 +41,24 @@ class RegisterUser extends Component {
       RegistrationActions.fnameChange(({fname: event.target.value}))
   }
   handleLastNameChange(event) {
-        debugger;
       RegistrationActions.lnameChange(({lname: event.target.value}))
   }
   handleTypeChange(event) {
-        debugger;
       RegistrationActions.typeChange(({userType: event.target.value}))
   }
 
 
-    defaultStateAfterCreate() {
-      this.setState({
-        fname: ''
-      });
-      this.setState({
-        lname: ''
-      });
-      this.setState({
-        userType: 'Buyer'
-      });
-        this.setState({
-            userid: ''
-        });
-    }
-
     handleSubmit(event) {
         RegistrationActions.registerRequest(this.state.data);
-      //this.createUser();
       event.preventDefault();
-      //this.defaultStateAfterCreate();
     }
 
     render() {
       const isEnabled =
           this.state.data.fname.length > 0 &&
           this.state.data.lname.length > 0 &&
-          this.state.data.userid.length > 0;
+          this.state.data.userid.length > 0 &&
+          this.state.data.userIDAvailabilityFlag;
       return (
 
 
@@ -90,6 +72,7 @@ class RegisterUser extends Component {
       <div className="form-group">
         <label htmlFor="userId">User ID</label> {/* for is reserved in JS, so htmlFor must be used */}
         <input type="text" className="form-control" id="userId" value={this.state.data.userid} onChange={this.handleUserIdChange} />
+        <UserIDHelper userIdHelper={this.state.data}/>
       </div>
       <div className="form-group">
         <label htmlFor="firstName">Frist Name</label> {/* for is reserved in JS, so htmlFor must be used */}
@@ -120,6 +103,32 @@ class RegisterUser extends Component {
     }
   }
 
+
+class UserIDHelper extends React.Component {
+    render() {
+        return this.props.userIdHelper.userIDAvailabilityFlag === true ? <Available /> : <NotAvailable />;
+    }
+}
+
+class Available extends React.Component {
+    render() {
+        return (
+            <div>
+                <label>Bingo!!! This UserID is now yours...</label>
+            </div>
+        )
+    }
+}
+
+class NotAvailable extends React.Component {
+    render() {
+        return (
+            <div>
+                <label>*** Booo, you gotta select another UserID***</label>
+            </div>
+        )
+    }
+}
 
   class UserList extends React.Component {
     render() {

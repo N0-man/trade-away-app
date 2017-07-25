@@ -29,6 +29,14 @@ var UserService = {
         });
     },
     isUserIDAvaialble: function(userID){
+        fetch('http://localhost:8080//isUserIDAvailable/' + userID, {
+            method: 'GET',
+        }).then((response) => {
+            return response.json()
+        })
+            .then((json) => {
+                RegistrationActions.userIDValidation(json)
+            });
         return false
     }
 }
